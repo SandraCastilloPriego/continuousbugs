@@ -34,13 +34,10 @@ import weka.classifiers.bayes.NaiveBayesUpdateable;
 import weka.classifiers.functions.LinearRegression;
 import weka.classifiers.functions.Logistic;
 import weka.classifiers.functions.SMO;
-import weka.classifiers.functions.SMOreg;
 import weka.classifiers.functions.SimpleLogistic;
 import weka.classifiers.lazy.IB1;
 import weka.classifiers.lazy.KStar;
-import weka.classifiers.lazy.LWL;
 import weka.classifiers.meta.AdaBoostM1;
-import weka.classifiers.meta.AdditiveRegression;
 import weka.classifiers.meta.Bagging;
 import weka.classifiers.meta.LogitBoost;
 import weka.classifiers.meta.MultiScheme;
@@ -157,7 +154,7 @@ public class Bug {
         public void orderPurgeGenes() {
                 int removeGenes = this.rowList.size() - this.MAXNUMBERGENES;
                 if (removeGenes > 0) {
-                        int mutation = this.mutation();
+                        int mutation = 0;//this.mutation();
                         for (int i = 0; i < removeGenes + mutation; i++) {
                                 int index = rand.nextInt(this.rowList.size() - 1);
                                 this.rowList.remove(index);
