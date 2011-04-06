@@ -2,47 +2,25 @@
 
 <configuration> 
   <nodes local="2"/>  
-  <modules> 
-    <!--<module class="GopiBugs.modules.file.openLCMSDatasetFile.OpenFile"/>  
-    <module class="GopiBugs.modules.file.openGCGCDatasetFile.OpenFile"> 
-      <parameters>
-        <parameter name="File Name: " type="FILE_NAME">File Name</parameter>
-        <parameter name="Number of Columns for Parameters: " type="INTEGER">10</parameter>
-      </parameters> 
-    </module>  -->  
+  <modules>     
     <module class="GopiBugs.modules.file.openBasicFiles.training.OpenBasicFile"/>  
     <module class="GopiBugs.modules.file.openBasicFiles.validation.OpenBasicFile"/>  
-    <module class="GopiBugs.modules.exit.ExitProgram"/>  
-    <module class="GopiBugs.modules.configuration.proxy.ProxyConfiguration"> 
-      <parameters>
-        <parameter name="Proxy server:" type="STRING"></parameter>
-        <parameter name="Port:" type="STRING"></parameter>
-      </parameters> 
-    </module>  
-    <!--  <module class="GopiBugs.modules.configuration.tables.GCGC.GCGCColumnsView"> 
-      <parameters>
-        <parameter name="GCGC Columns" type="MULTIPLE_SELECTION">Selection,ID,RT1,RT2,RTI,N Found,Cas Number,Max similarity,Mean similarity,Similarity std dev,Metabolite name,Metabolite all names,Class,Pubchem ID,Mass,Difference,Spectrum</parameter>
-      </parameters> 
-    </module>  
-    <module class="GopiBugs.modules.configuration.tables.LCMS.LCMSColumnsView"> 
-      <parameters>
-        <parameter name="LCMS Columns" type="MULTIPLE_SELECTION">Selection,Id,Average m/z,Average Retention time,Name,All names,Identification type,PubChem ID,VTT ID,All VTT IDs,Lipid class,Num found,Standard,FA Composition,Alignment</parameter>
-      </parameters> 
-    </module>  -->  
+    <module class="GopiBugs.modules.exit.ExitProgram"/>     
+      
     <module class="GopiBugs.modules.simulation.test.Test"> 
       <parameters>
-        <parameter name="Ridge" type="DOUBLE">0.5</parameter>
-        <parameter name="IDs:" type="STRING">231,78,42</parameter>
+        <parameter name="Ridge" type="DOUBLE">0.0</parameter>
+        <parameter name="IDs:" type="STRING"/>
       </parameters> 
     </module>  
     <module class="GopiBugs.modules.simulation.control.StartSimulation"> 
       <parameters>
         <parameter name="Number of iterations" type="INTEGER">50</parameter>
-        <parameter name="Size of the world" type="INTEGER">50</parameter>
+        <parameter name="Size of the world" type="INTEGER">25</parameter>
         <parameter name="Max number of bugs" type="INTEGER">1500</parameter>
-        <parameter name="Number of copies of bugs" type="INTEGER">3</parameter>
+        <parameter name="Number of copies of bugs" type="INTEGER">10</parameter>
         <parameter name="Life of the Bugs" type="INTEGER">500</parameter>
-        <parameter name="Stopping criteria (%)" type="INTEGER">20</parameter>
+        <parameter name="Stopping criteria (%)" type="INTEGER">0</parameter>
       </parameters> 
     </module> 
   </modules>  
@@ -66,19 +44,9 @@
       <height>-1</height>
     </mainwindow>
     <lastdirectory></lastdirectory>
-    <lastProjectDirectory>/home/scsandra/Desktop/bugs/liverFat/trainingLogfinal.csv</lastProjectDirectory>
+    <lastProjectDirectory>/home/scsandra/Desktop/validationTest.csv</lastProjectDirectory>
     <lastSaveDirectory>/</lastSaveDirectory>
     <lastMyllyDirectory>/</lastMyllyDirectory>
     <normalizationDirectory></normalizationDirectory>
-    <parameter name="LCMS Columns" type="MULTIPLE_SELECTION">Selection,Id,Average m/z,Average Retention time,Name,All names,Identification type,PubChem ID,VTT ID,All VTT IDs,Lipid class,Num found,Standard,FA Composition,Alignment</parameter>
-    <parameter name="GCGC Columns" type="MULTIPLE_SELECTION">Selection,ID,RT1,RT2,RTI,N Found,Cas Number,Max similarity,Mean similarity,Similarity std dev,Metabolite name,Metabolite all names,Class,Pubchem ID,Mass,Difference,Spectrum</parameter>
-    <parameter name="LCMS Filename" type="FILE_NAME"/>
-    <parameter name="LCMS type" type="STRING"/>
-    <parameter name="Export LCMS elements" type="MULTIPLE_SELECTION">Selection,Id,Average m/z,Average Retention time,Name,All names,Identification type,PubChem ID,VTT ID,All VTT IDs,Lipid class,Num found,Standard,FA Composition,Alignment</parameter>
-    <parameter name="GCGC Filename" type="FILE_NAME"/>
-    <parameter name="GCGC type" type="STRING"/>
-    <parameter name="Export GCGC elements" type="MULTIPLE_SELECTION">Selection,ID,RT1,RT2,RTI,N Found,Cas Number,Max similarity,Mean similarity,Similarity std dev,Metabolite name,Metabolite all names,Class,Pubchem ID,Mass,Difference,Spectrum</parameter>
-    <parameter name="Filename" type="FILE_NAME"/>
-    <parameter name="type" type="STRING"/>
   </desktop> 
 </configuration>
