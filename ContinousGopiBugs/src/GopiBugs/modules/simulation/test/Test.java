@@ -17,7 +17,7 @@
  */
 package GopiBugs.modules.simulation.test;
 
-import GopiBugs.modules.file.saveGCGCFile.*;
+
 import GopiBugs.data.BugDataset;
 import GopiBugs.data.ParameterSet;
 import GopiBugs.data.impl.SimpleParameterSet;
@@ -67,12 +67,12 @@ public class Test implements GopiBugsModule, TaskListener, ActionListener{
 
     public void taskFinished(Task task) {
         if (task.getStatus() == TaskStatus.FINISHED) {
-            logger.info("Finished Test concrete rows" + ((SaveGCGCFileTask) task).getTaskDescription());
+            logger.info("Finished Test concrete rows" + (task).getTaskDescription());
         }
 
         if (task.getStatus() == TaskStatus.ERROR) {
 
-            String msg = "Error while Test concrete rows on .. " + ((SaveGCGCFileTask) task).getErrorMessage();
+            String msg = "Error while Test concrete rows on .. " + (task).getErrorMessage();
             logger.severe(msg);
             desktop.displayErrorMessage(msg);
 

@@ -20,12 +20,9 @@ package GopiBugs.desktop.impl;
 import GopiBugs.data.BugDataset;
 
 import GopiBugs.data.DatasetType;
-import GopiBugs.data.impl.datasets.SimpleLCMSDataset;
 import GopiBugs.data.impl.SimpleParameterSet;
 import GopiBugs.desktop.Desktop;
 import GopiBugs.main.GopiBugsCore;
-import GopiBugs.modules.file.saveGCGCFile.SaveGCGCFile;
-import GopiBugs.modules.file.saveLCMSFile.SaveLCMSFile;
 import GopiBugs.modules.file.saveOtherFile.SaveOtherFile;
 import GopiBugs.util.GUIUtils;
 import GopiBugs.util.components.DragOrderedJList;
@@ -171,26 +168,16 @@ public class ItemSelector extends JPanel implements ActionListener,
 
                 if (command.equals("SHOW_DATASET")) {
                         showData();
-                }              
+                }
 
                 if (command.equals("SAVE_DATASET")) {
                         BugDataset[] selectedFiles = getSelectedDatasets();
-                        if (selectedFiles[0] != null && selectedFiles[0].getType() == DatasetType.LCMS) {
-                                SaveLCMSFile save = new SaveLCMSFile(selectedFiles);
-                                save.setParameters(((DesktopParameters) GopiBugsCore.getDesktop().getParameterSet()).getSaveLCMSParameters());
-                                save.initModule();
-                                ((DesktopParameters) GopiBugsCore.getDesktop().getParameterSet()).setSaveLCMSParameters((SimpleParameterSet) save.getParameterSet());
-                        } else if (selectedFiles[0].getType() == DatasetType.GCGCTOF) {
-                                SaveGCGCFile save = new SaveGCGCFile(selectedFiles);
-                                save.setParameters(((DesktopParameters) GopiBugsCore.getDesktop().getParameterSet()).getSaveGCGCParameters());
-                                save.initModule();
-                                ((DesktopParameters) GopiBugsCore.getDesktop().getParameterSet()).setSaveGCGCParameters((SimpleParameterSet) save.getParameterSet());
-                        } else {
-                                SaveOtherFile save = new SaveOtherFile(selectedFiles);
-                                save.setParameters(((DesktopParameters) GopiBugsCore.getDesktop().getParameterSet()).getSaveOtherParameters());
-                                save.initModule();
-                                ((DesktopParameters) GopiBugsCore.getDesktop().getParameterSet()).setSaveOtherParameters((SimpleParameterSet) save.getParameterSet());
-                        }
+
+                        SaveOtherFile save = new SaveOtherFile(selectedFiles);
+                        save.setParameters(((DesktopParameters) GopiBugsCore.getDesktop().getParameterSet()).getSaveOtherParameters());
+                        save.initModule();
+                        ((DesktopParameters) GopiBugsCore.getDesktop().getParameterSet()).setSaveOtherParameters((SimpleParameterSet) save.getParameterSet());
+
                 }
 
 
@@ -243,13 +230,6 @@ public class ItemSelector extends JPanel implements ActionListener,
 
                 return res;
 
-        }
-
-        /**
-         * Sets the active raw data item in the list
-         */
-        public void setActiveRawData(SimpleLCMSDataset rawData) {
-                DatasetFiles.setSelectedValue(rawData, true);
         }
 
         public void mouseClicked(MouseEvent e) {

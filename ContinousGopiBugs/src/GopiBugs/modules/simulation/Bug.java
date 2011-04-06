@@ -81,6 +81,7 @@ public class Bug {
         Range range;
         double ridge = 0;
         private double score = 0;
+     //   int[] clusters;
 
         public Bug(int x, int y, Cell cell, PeakListRow row, BugDataset dataset, int bugLife) {
                 rand = new Random();
@@ -94,14 +95,23 @@ public class Bug {
                         this.rowList.add(row);
                 }
                 this.classifierType = classifiersEnum.LinearRegression;
-                this.ridge = (double) (this.rand.nextInt(10) + 1) / 10;
+                this.ridge = (double) (this.rand.nextInt(200) + 1) / 10;
                 this.classify(cell.getRange());
                 this.life = bugLife;
+
+                /*clusters = new int[rowList.size()];
+                for (int i = 0; i < rowList.size(); i++) {
+                        clusters[i] = rowList.get(i).getCluster();
+                }*/
         }
 
         public double getRidge() {
                 return ridge;
         }
+
+       /* public int[] getClusters() {
+                return clusters;
+        }*/
 
         @Override
         public Bug clone() {
@@ -137,6 +147,10 @@ public class Bug {
                 this.classifierType = classifiersEnum.LinearRegression;
                 this.classify(cell.getRange());
                 this.life = bugLife;
+              /*  clusters = new int[rowList.size()];
+                for (int i = 0; i < rowList.size(); i++) {
+                        clusters[i] = rowList.get(i).getCluster();
+                }*/
         }
 
         public void assingGenes(Bug parent, int plus) {
@@ -154,12 +168,26 @@ public class Bug {
         public void orderPurgeGenes() {
                 int removeGenes = this.rowList.size() - this.MAXNUMBERGENES;
                 if (removeGenes > 0) {
-                        int mutation = 0;//this.mutation();
-                        for (int i = 0; i < removeGenes + mutation; i++) {
-                                int index = rand.nextInt(this.rowList.size() - 1);
+                        for (int i = 0; i < removeGenes; i++) {
+                                int index = getRepeatIndex();
+                                if (index == -1) {
+                                        index = rand.nextInt(this.rowList.size() - 1);
+                                }
                                 this.rowList.remove(index);
                         }
                 }
+        }
+
+        public int getRepeatIndex() {
+              for(int i = 0; i < this.rowList.size(); i++){
+                        PeakListRow row = this.rowList.get(i);
+                        for(PeakListRow r : this.rowList){
+                                if(row != r && row.getCluster() == r.getCluster()){
+                                        return i;
+                                }
+                        }
+              }
+              return -1;
         }
 
         public classifiersEnum getClassifierType() {

@@ -19,15 +19,9 @@ package GopiBugs.util.components;
 
 import GopiBugs.data.BugDataset;
 import GopiBugs.data.PeakListRow;
-import GopiBugs.data.datamodels.DatasetLCMSDataModel;
-import GopiBugs.data.datamodels.DatasetGCGCDataModel;
 import GopiBugs.data.datamodels.OtherDataModel;
 import GopiBugs.data.DatasetType;
-import GopiBugs.data.impl.datasets.SimpleGCGCDataset;
-import GopiBugs.data.impl.datasets.SimpleLCMSDataset;
 import GopiBugs.data.impl.datasets.SimpleBasicDataset;
-import GopiBugs.data.impl.peaklists.SimplePeakListRowGCGC;
-import GopiBugs.data.impl.peaklists.SimplePeakListRowLCMS;
 import GopiBugs.data.impl.peaklists.SimplePeakListRowOther;
 import GopiBugs.util.Tables.DataTableModel;
 
@@ -38,11 +32,7 @@ import GopiBugs.util.Tables.DataTableModel;
 public class FileUtils {
 
     public static PeakListRow getPeakListRow(DatasetType type) {
-        switch (type) {
-            case LCMS:
-                return new SimplePeakListRowLCMS();
-            case GCGCTOF:
-                return new SimplePeakListRowGCGC();
+        switch (type) {           
             case TRAINING:
             case VALIDATION:
                 return new SimplePeakListRowOther();
@@ -52,13 +42,7 @@ public class FileUtils {
 
     public static BugDataset getDataset(BugDataset dataset, String Name) {
         BugDataset newDataset = null;
-        switch (dataset.getType()) {
-            case LCMS:
-                newDataset = new SimpleLCMSDataset(Name + dataset.getDatasetName());
-                break;
-            case GCGCTOF:
-                newDataset = new SimpleGCGCDataset(Name + dataset.getDatasetName());
-                break;
+        switch (dataset.getType()) {            
             case TRAINING:
             case VALIDATION:
                 newDataset = new SimpleBasicDataset(Name + dataset.getDatasetName());
@@ -70,13 +54,7 @@ public class FileUtils {
 
     public static DataTableModel getTableModel(BugDataset dataset) {
         DataTableModel model = null;
-        switch (dataset.getType()) {
-            case LCMS:
-                model = new DatasetLCMSDataModel(dataset);
-                break;
-            case GCGCTOF:
-                model = new DatasetGCGCDataModel(dataset);
-                break;
+        switch (dataset.getType()) {            
             case TRAINING:
             case VALIDATION:
                 model = new OtherDataModel(dataset);
