@@ -29,71 +29,82 @@ import java.util.Random;
  */
 public class Cell {
 
-    String type;
-    String sampleName;
-    List<Bug> bugsInside;
-    int bugLife;
-    Random rand;
-    Range range;
+        String type;
+        String sampleName;
+        List<Bug> bugsInside;
+        int bugLife;
+        Random rand;
+        Range range;
 
-    public Cell(int bugLife) {
-        this.rand = new Random();
-        this.bugLife = bugLife;
-    }
-
-    public void setParameters(String sampleName, Range range, String type) {
-        this.sampleName = sampleName;
-        this.bugsInside = new ArrayList<Bug>();
-        this.range = range;
-        this.type = type;
-    }
-
-    public Range getRange() {
-        return range;
-    }
-
-    public void addBug(Bug bug) {
-        this.bugsInside.add(bug);
-    }
-
-    public void removeBug(Bug bug) {
-        this.bugsInside.remove(bug);
-    }
-
-    public String getSampleName() {
-        return this.sampleName;
-    }
-
-    public String getType() {
-        return this.type;
-    }
-
-    public synchronized List<Bug> reproduction() {
-        try {
-            Comparator<Bug> c = new Comparator<Bug>() {
-
-                public int compare(Bug o1, Bug o2) {
-                    if (o1.getScore() < o2.getScore()) {
-                        return 1;
-                    } else {
-                        return -1;
-                    }
-                }
-            };
-            List<Bug> childs = new ArrayList<Bug>();
-            if (bugsInside.size() > 1) {
-                Collections.sort(bugsInside, c);
-                Bug mother = bugsInside.get(0);
-                //  System.out.println(mother.getAreaUnderTheCurve());
-                for (Bug father : this.bugsInside) {
-                    if (mother != father && mother.getScore() < 0.4 && father.getScore() < 0.4 && mother.getAge() > 200 && father.getAge() > 200) {
-                        childs.add(new Bug(mother, father, mother.getDataset(), bugLife));
-                    }
-                }
-            }
-            return childs;
-        } catch (Exception e) {
-            return null;
+        public Cell(int bugLife) {
+                this.rand = new Random();
+                this.bugLife = bugLife;
         }
-    }
+
+        public void setParameters(String sampleName, Range range, String type) {
+                this.sampleName = sampleName;
+                this.bugsInside = new ArrayList<Bug>();
+                this.range = range;
+                this.type = type;
+        }
+
+        public Range getRange() {
+                return range;
+        }
+
+        public void addBug(Bug bug) {
+                this.bugsInside.add(bug);
+        }
+
+        public void removeBug(Bug bug) {
+                this.bugsInside.remove(bug);
+        }
+
+        public String getSampleName() {
+                return this.sampleName;
+        }
+
+        public String getType() {
+                return this.type;
+        }
+
+        public synchronized List<Bug> reproduction() {
+                try {
+                        Comparator<Bug> c = new Comparator<Bug>() {
+
+                                public int compare(Bug o1, Bug o2) {
+                                        if (o1.getScore() < o2.getScore()) {
+                                                return 1;
+                                        } else {
+                                                return -1;
+                                        }
+                                }
+                        };
+                        List<Bug> childs = new ArrayList<Bug>();
+                        if (bugsInside.size() > 1) {
+                                Collections.sort(bugsInside, c);
+                                Bug mother = bugsInside.get(0);
+                                //  System.out.println(mother.getAreaUnderTheCurve());
+                                for (Bug father : this.bugsInside) {
+                                        if (mother != father && mother.getScore() < 0.4 && father.getScore() < 0.4 && mother.getAge() > 200 && father.getAge() > 200) {
+                                                childs.add(new Bug(mother, father, mother.getDataset(), bugLife));
+                                        }
+                                }
+                        }
+                        return childs;
+                } catch (Exception e) {
+                        return null;
+                }
+        }
+
+       /* public boolean areCompatible(Bug father, Bug mother) {
+                int[] clusterFather = father.getClusters();
+                int[] clusterMother = mother.getClusters();
+
+                if(clusterFather.length > 1 && clusterMother.length > 1) return true;
+
+                for(int cF : clusterFather){
+
+                }
+        }*/
 }

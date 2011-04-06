@@ -124,4 +124,8 @@ public interface PeakListRow {
          * @param value
          */
         public void setVar(String varName, Object value);
+
+        public int getCluster();
+
+        public void setCluster(int cluster);
 }

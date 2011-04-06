@@ -20,11 +20,6 @@ package GopiBugs.desktop.impl;
 import GopiBugs.data.StorableParameterSet;
 import GopiBugs.data.impl.SimpleParameterSet;
 import GopiBugs.main.GopiBugsCore;
-import GopiBugs.modules.configuration.proxy.ProxyConfigurationParameters;
-import GopiBugs.modules.configuration.tables.GCGC.GCGCColumnsViewParameters;
-import GopiBugs.modules.configuration.tables.LCMS.LCMSColumnsViewParameters;
-import GopiBugs.modules.file.saveGCGCFile.SaveGCGCParameters;
-import GopiBugs.modules.file.saveLCMSFile.SaveLCMSParameters;
 import GopiBugs.modules.file.saveOtherFile.SaveOtherParameters;
 import GopiBugs.util.NumberFormatter;
 import GopiBugs.util.NumberFormatter.FormatterType;
@@ -91,10 +86,7 @@ public class DesktopParameters implements StorableParameterSet,
         this.rtFormat = rtFormat;
         this.intensityFormat = intensityFormat;
 
-        LCMSViewParameters = new LCMSColumnsViewParameters();
-        GCGCViewParameters = new GCGCColumnsViewParameters();
-        SaveLCMSParameters = new SaveLCMSParameters();
-        SaveGCGCParameters = new SaveGCGCParameters();
+        
         SaveOtherParameters = new SaveOtherParameters();
 
         MainWindow mainWindow = (MainWindow) GopiBugsCore.getDesktop();
@@ -115,26 +107,19 @@ public class DesktopParameters implements StorableParameterSet,
         return proxy;
     }
 
-    public void setProxyParameters(ProxyConfigurationParameters proxy) {
-        this.proxy = proxy;
-    }
+  
 
     public SimpleParameterSet getViewLCMSParameters() {
         return LCMSViewParameters;
     }
 
-    public void setViewLCMSParameters(LCMSColumnsViewParameters LCMSViewParameters) {
-        this.LCMSViewParameters = LCMSViewParameters;
-    }
+   
 
     public SimpleParameterSet getViewGCGCParameters() {
         return GCGCViewParameters;
     }
 
-    public void setViewGCGCParameters(GCGCColumnsViewParameters GCGCViewParameters) {
-        this.GCGCViewParameters = GCGCViewParameters;
-    }
-
+   
     public SimpleParameterSet getSaveLCMSParameters() {
         return SaveLCMSParameters;
     }
