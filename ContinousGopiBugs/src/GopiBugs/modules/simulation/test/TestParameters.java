@@ -17,10 +17,9 @@
  */
 package GopiBugs.modules.simulation.test;
 
-import GopiBugs.modules.file.saveGCGCFile.*;
+
 import GopiBugs.data.Parameter;
 import GopiBugs.data.ParameterType;
-import GopiBugs.data.GCGCColumnName;
 import GopiBugs.data.impl.SimpleParameter;
 import GopiBugs.data.impl.SimpleParameterSet;
 
