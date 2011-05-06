@@ -81,7 +81,7 @@ public class Bug {
         Range range;
         double ridge = 0;
         private double score = 0;
-     //   int[] clusters;
+        int[] clusters;
 
         public Bug(int x, int y, Cell cell, PeakListRow row, BugDataset dataset, int bugLife) {
                 rand = new Random();
@@ -99,19 +99,19 @@ public class Bug {
                 this.classify(cell.getRange());
                 this.life = bugLife;
 
-                /*clusters = new int[rowList.size()];
+                clusters = new int[rowList.size()];
                 for (int i = 0; i < rowList.size(); i++) {
                         clusters[i] = rowList.get(i).getCluster();
-                }*/
+                }
         }
 
         public double getRidge() {
                 return ridge;
         }
 
-       /* public int[] getClusters() {
+        public int[] getClusters() {
                 return clusters;
-        }*/
+        }
 
         @Override
         public Bug clone() {
@@ -147,10 +147,10 @@ public class Bug {
                 this.classifierType = classifiersEnum.LinearRegression;
                 this.classify(cell.getRange());
                 this.life = bugLife;
-              /*  clusters = new int[rowList.size()];
+                clusters = new int[rowList.size()];
                 for (int i = 0; i < rowList.size(); i++) {
                         clusters[i] = rowList.get(i).getCluster();
-                }*/
+                }
         }
 
         public void assingGenes(Bug parent, int plus) {
@@ -171,7 +171,7 @@ public class Bug {
                         for (int i = 0; i < removeGenes; i++) {
                                 int index = getRepeatIndex();
                                 if (index == -1) {
-                                        index = rand.nextInt(this.rowList.size() - 1);
+                                       index = rand.nextInt(this.rowList.size() - 1);
                                 }
                                 this.rowList.remove(index);
                         }
@@ -229,7 +229,7 @@ public class Bug {
 
         boolean isDead() {
                 life -= 1;
-                if (this.rowList.size() == 0) {
+                if (this.rowList.isEmpty()) {
                         life = 0;
                 }
                 if (this.life < 1 || this.life == Double.NaN) {

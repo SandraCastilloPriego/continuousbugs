@@ -39,17 +39,23 @@ import weka.core.SparseInstance;
  */
 public class TestTask implements Task {
 
-        BugDataset training;
+        BugDataset training, validation;
         private Classifier classifier;
         double spec = 0, sen = 0, totalspec = 0, totalsen = 0;
         List<Integer> ids;
-        Instances data;
+        Instances trainingData, validationData;
         double ridge = 0;
         private TaskStatus status = TaskStatus.WAITING;
         private String errorMessage;
 
-        public TestTask(BugDataset dataset, SimpleParameterSet parameters) {
-                this.training = dataset;
+        public TestTask(BugDataset training, BugDataset validation, SimpleParameterSet parameters) {
+                this.training = training;
+                if (validation == null) {
+                        this.validation = training;
+                } else {
+                        this.validation = validation;
+                }
+
                 ridge = (Double) parameters.getParameterValue(TestParameters.ridge);
                 String id = (String) parameters.getParameterValue(TestParameters.ids);
                 String[] idsS = id.split(",");
@@ -96,10 +102,10 @@ public class TestTask implements Task {
 
         public double prediction() {
                 try {
-                        Evaluation eval = new Evaluation(data);
-                        eval.evaluateModel(classifier, data);
-                        for (int i = 0; i < data.numInstances(); i++) {
-                                System.out.println(data.instance(i).classValue() + " - " + eval.evaluateModelOnce(classifier, data.instance(i)));
+                        Evaluation eval = new Evaluation(trainingData);
+                        eval.evaluateModel(classifier, trainingData);
+                        for (int i = 0; i < trainingData.numInstances(); i++) {
+                                System.out.println(trainingData.instance(i).classValue() + " - " + eval.evaluateModelOnce(classifier, trainingData.instance(i)));
                         }
 
                         return eval.errorRate();
@@ -112,10 +118,11 @@ public class TestTask implements Task {
 
         public void printPrediction() {
                 try {
-                        Evaluation eval = new Evaluation(data);
-                        eval.evaluateModel(classifier, data);
-                        for (int i = 0; i < data.numInstances(); i++) {
-                                System.out.println(data.instance(i).classValue() + " - " + eval.evaluateModelOnce(classifier, data.instance(i)));
+                        validationData = this.getDataset(validation);
+                        Evaluation eval = new Evaluation(validationData);
+                        eval.evaluateModel(classifier, validationData);
+                        for (int i = 0; i < validationData.numInstances(); i++) {
+                                System.out.println(validationData.instance(i).classValue() + " - " + eval.evaluateModelOnce(classifier, validationData.instance(i)));
                         }
 
                         System.out.println(eval.toSummaryString());
@@ -125,14 +132,12 @@ public class TestTask implements Task {
                 }
         }
 
-       
-
         private void classify() {
                 try {
-                        data = this.getDataset(this.training);
+                        trainingData = this.getDataset(this.training);
                         classifier = new LinearRegression();
                         ((LinearRegression) classifier).setRidge(this.ridge);
-                        classifier.buildClassifier(data);
+                        classifier.buildClassifier(trainingData);
                 } catch (Exception ex) {
                 }
         }

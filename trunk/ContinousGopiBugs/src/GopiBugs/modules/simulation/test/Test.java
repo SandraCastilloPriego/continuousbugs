@@ -17,7 +17,6 @@
  */
 package GopiBugs.modules.simulation.test;
 
-
 import GopiBugs.data.BugDataset;
 import GopiBugs.data.ParameterSet;
 import GopiBugs.data.impl.SimpleParameterSet;
@@ -39,24 +38,24 @@ import java.util.logging.Logger;
  *
  * @author scsandra
  */
-public class Test implements GopiBugsModule, TaskListener, ActionListener{
+public class Test implements GopiBugsModule, TaskListener, ActionListener {
 
-    private Logger logger = Logger.getLogger(this.getClass().getName());
-    private Desktop desktop;
-    private SimpleParameterSet parameters;   
+        private Logger logger = Logger.getLogger(this.getClass().getName());
+        private Desktop desktop;
+        private SimpleParameterSet parameters;
 
-    public void initModule() {
-        this.desktop = GopiBugsCore.getDesktop();
-            desktop.addMenuItem(GopiBugsMenu.CONTROL, "Test concrete rows..",
-                    "Test concrete rows", KeyEvent.VK_L, this, null, null);
-            parameters = new TestParameters();
-    }
+        public void initModule() {
+                this.desktop = GopiBugsCore.getDesktop();
+                desktop.addMenuItem(GopiBugsMenu.CONTROL, "Test concrete rows..",
+                        "Test concrete rows", KeyEvent.VK_L, this, null, null);
+                parameters = new TestParameters();
+        }
 
-    public void taskStarted(Task task) {
-        logger.info("Running Test concrete rows");
-    }
+        public void taskStarted(Task task) {
+                logger.info("Running Test concrete rows");
+        }
 
-     public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(ActionEvent e) {
                 ExitCode exitCode = setupParameters();
                 if (exitCode != ExitCode.OK) {
                         return;
@@ -65,55 +64,55 @@ public class Test implements GopiBugsModule, TaskListener, ActionListener{
                 runModule();
         }
 
-    public void taskFinished(Task task) {
-        if (task.getStatus() == TaskStatus.FINISHED) {
-            logger.info("Finished Test concrete rows" + (task).getTaskDescription());
+        public void taskFinished(Task task) {
+                if (task.getStatus() == TaskStatus.FINISHED) {
+                        logger.info("Finished Test concrete rows" + (task).getTaskDescription());
+                }
+
+                if (task.getStatus() == TaskStatus.ERROR) {
+
+                        String msg = "Error while Test concrete rows on .. " + (task).getErrorMessage();
+                        logger.severe(msg);
+                        desktop.displayErrorMessage(msg);
+
+                }
         }
 
-        if (task.getStatus() == TaskStatus.ERROR) {
-
-            String msg = "Error while Test concrete rows on .. " + (task).getErrorMessage();
-            logger.severe(msg);
-            desktop.displayErrorMessage(msg);
-
-        }
-    }
-
-    public ExitCode setupParameters() {
-        try {
-            ParameterSetupDialog dialog = new ParameterSetupDialog("parameters", parameters);
-            dialog.setVisible(true);
-            return dialog.getExitCode();
-        } catch (Exception exception) {
-            return ExitCode.CANCEL;
-        }
-    }
-
-    public ParameterSet getParameterSet() {
-        return parameters;
-    }
-
-    public void setParameters(ParameterSet parameterValues) {
-        parameters = (SimpleParameterSet) parameterValues;
-    }
-
-    @Override
-    public String toString() {
-        return "Test";
-    }
-
-    public Task[] runModule() {
-
-        // prepare a new group of tasks
-        BugDataset[] datasets = desktop.getSelectedDataFiles();
-        Task tasks[] = new TestTask[datasets.length];
-        for (int i = 0; i < datasets.length; i++) {
-            tasks[i] = new TestTask(datasets[i], parameters);
+        public ExitCode setupParameters() {
+                try {
+                        ParameterSetupDialog dialog = new ParameterSetupDialog("parameters", parameters);
+                        dialog.setVisible(true);
+                        return dialog.getExitCode();
+                } catch (Exception exception) {
+                        return ExitCode.CANCEL;
+                }
         }
 
-        GopiBugsCore.getTaskController().addTasks(tasks);
+        public ParameterSet getParameterSet() {
+                return parameters;
+        }
 
-        return tasks;
+        public void setParameters(ParameterSet parameterValues) {
+                parameters = (SimpleParameterSet) parameterValues;
+        }
 
-    }
+        @Override
+        public String toString() {
+                return "Test";
+        }
+
+        public Task[] runModule() {
+
+                // prepare a new group of tasks
+                BugDataset[] datasets = desktop.getSelectedDataFiles();
+                Task tasks[] = new TestTask[1];
+
+                tasks[0] = new TestTask(datasets[0], datasets[1], parameters);
+
+
+                GopiBugsCore.getTaskController().addTasks(tasks);
+
+                return tasks;
+
+        }
 }

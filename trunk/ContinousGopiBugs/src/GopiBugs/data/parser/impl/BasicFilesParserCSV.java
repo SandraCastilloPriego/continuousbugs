@@ -18,7 +18,6 @@
 package GopiBugs.data.parser.impl;
 
 import GopiBugs.data.BugDataset;
-import GopiBugs.data.PeakListRow;
 import GopiBugs.data.impl.datasets.SimpleBasicDataset;
 import GopiBugs.data.impl.peaklists.SimplePeakListRowOther;
 import GopiBugs.data.parser.Parser;
@@ -44,7 +43,7 @@ public class BasicFilesParserCSV implements Parser {
             this.rowsNumber = 0;
             this.rowsReaded = 0;
             this.datasetPath = datasetPath;
-            this.dataset = new SimpleBasicDataset(this.getDatasetName());
+            this.dataset = new SimpleBasicDataset(getDatasetName());
             countNumberRows();
         }
     }
@@ -90,7 +89,6 @@ public class BasicFilesParserCSV implements Parser {
             
 
         } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -109,20 +107,20 @@ public class BasicFilesParserCSV implements Parser {
                             try {
                                 value = Double.parseDouble(sdata[i]);
                             } catch (Exception ee) {
-                                ee.printStackTrace();
+                               
                             }
                         }
                         lipid.setPeak(header[i], String.valueOf(value));
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                   
                 }
             }
 
             this.dataset.addRow(lipid);
 
         } catch (Exception exception) {
-            exception.printStackTrace();
+          
         }
     }
 
