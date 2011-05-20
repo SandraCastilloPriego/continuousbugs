@@ -49,7 +49,7 @@ public class World {
 
     public World(BugDataset training, BugDataset validation, int cellsPerSide, Range range,
             List<Bug> bugs, int numberOfBugsCopies, int bugLife, JTextArea text,
-            List<Result> results, int bugsLimitNumber) {
+            List<Result> results, int bugsLimitNumber, double maxScoreForReproduction) {
         this.training = training;
         this.validation = validation;
         this.cellsPerSide = cellsPerSide;
@@ -73,7 +73,7 @@ public class World {
             for (int i = 0; i < cellsPerSide; i++) {
                 cells[i] = new Cell[cellsPerSide];
                 for (int j = 0; j < cells[i].length; j++) {
-                    cells[i][j] = new Cell(bugLife);
+                    cells[i][j] = new Cell(bugLife, maxScoreForReproduction);
                     this.setSamplesInCell(training.getAllColumnNames(), cells[i][j], range);
                 }
             }

@@ -35,10 +35,12 @@ public class Cell {
         int bugLife;
         Random rand;
         Range range;
+        double maxScoreForReproduction;
 
-        public Cell(int bugLife) {
+        public Cell(int bugLife, double maxScoreForReproduction) {
                 this.rand = new Random();
                 this.bugLife = bugLife;
+                this.maxScoreForReproduction = maxScoreForReproduction;
         }
 
         public void setParameters(String sampleName, Range range, String type) {
@@ -84,9 +86,9 @@ public class Cell {
                         if (bugsInside.size() > 1) {
                                 Collections.sort(bugsInside, c);
                                 Bug mother = bugsInside.get(0);
-                                //  System.out.println(mother.getAreaUnderTheCurve());
+                              //   System.out.println(mother.getScore());
                                 for (Bug father : this.bugsInside) {
-                                        if (mother != father && mother.getScore() < 0.4 && father.getScore() < 0.4 && mother.getAge() > 200 && father.getAge() > 200) {
+                                        if (mother != father && mother.getScore() < maxScoreForReproduction && father.getScore() < maxScoreForReproduction && mother.getAge() > 200 && father.getAge() > 200) {
                                                 childs.add(new Bug(mother, father, mother.getDataset(), bugLife));
                                         }
                                 }
