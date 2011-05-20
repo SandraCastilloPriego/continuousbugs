@@ -231,35 +231,37 @@ public class StartSimulationTask {
                                 }
                         }
                 };
-              
-                for (int i = 0; i < 30; i++) {
-                         Bug bug = bugs.get(i);
-                        Result result = new Result();
-                        result.Classifier = bug.getClassifierType().name();
-                        List<Integer> ids = new ArrayList<Integer>();
-                        for (PeakListRow row : bug.getRows()) {
-                                result.addValue(String.valueOf(row.getID()));
-                                ids.add(row.getID());
-                        }
 
-                        TestBug testing = new TestBug(ids, bug.getClassifierType(), training, validation, bug.getRidge());
-                        double value = testing.prediction();
-                        result.realscore = value;
-                        result.score = bug.getScore();
-                        result.ridge = bug.getRidge();
-                        boolean isIt = false;
-                        for (Result r : this.results) {
-                                if (r.isIt(result.getValues(), result.Classifier)) {
-                                        r.count();
-                                        isIt = true;
+                for (int i = 0; i < 30; i++) {
+                        Bug bug = bugs.get(i);
+                        if (bug.getScore() < this.maxScoreForReproduction) {
+                                Result result = new Result();
+                                result.Classifier = bug.getClassifierType().name();
+                                List<Integer> ids = new ArrayList<Integer>();
+                                for (PeakListRow row : bug.getRows()) {
+                                        result.addValue(String.valueOf(row.getID()));
+                                        ids.add(row.getID());
+                                }
+
+                                TestBug testing = new TestBug(ids, bug.getClassifierType(), training, validation, bug.getRidge());
+                                double value = testing.prediction();
+                                result.realscore = value;
+                                result.score = bug.getScore();
+                                result.ridge = bug.getRidge();
+                                boolean isIt = false;
+                                for (Result r : this.results) {
+                                        if (r.isIt(result.getValues(), result.Classifier)) {
+                                                r.count();
+                                                isIt = true;
+                                        }
+                                }
+
+                                if (!isIt) {
+                                        this.results.add(result);
                                 }
                         }
-
-                        if (!isIt) {
-                                this.results.add(result);
-                        }
                 }
-            
+
 
                 Collections.sort(results, c);
 
