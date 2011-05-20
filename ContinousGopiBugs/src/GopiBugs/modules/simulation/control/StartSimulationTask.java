@@ -41,9 +41,6 @@ import java.util.List;
 import java.util.Random;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import weka.classifiers.Classifier;
-import weka.classifiers.Evaluation;
-import weka.core.Instances;
 
 /**
  *
@@ -66,6 +63,7 @@ public class StartSimulationTask {
         private int totalIDs, stoppingCriteria, stopCounting = 0;
         private List<Result> results;
         private double minCountId = 100;
+        private double maxScoreForReproduction;
 
         public StartSimulationTask(BugDataset[] datasets, SimpleParameterSet parameters) {
                 for (BugDataset dataset : datasets) {
@@ -82,6 +80,7 @@ public class StartSimulationTask {
                 this.iterations = (Integer) parameters.getParameterValue(StartSimulationParameters.iterations);
                 this.maxBugs = (Integer) parameters.getParameterValue(StartSimulationParameters.bugLimit);
                 this.stoppingCriteria = (Integer) parameters.getParameterValue(StartSimulationParameters.stoppingCriteria);
+                this.maxScoreForReproduction = (Double) parameters.getParameterValue(StartSimulationParameters.maxScore);
 
                 this.ranges = new ArrayList<Range>();
                 this.results = new ArrayList<Result>();
@@ -142,7 +141,7 @@ public class StartSimulationTask {
         }
 
         private void startCicle(Range range, List<Bug> bugs, List<Result> results) {
-                world = new World(training, validation, this.worldSize, range, bugs, this.numberOfBugsCopies, this.bugLife, textArea, results, this.maxBugs);
+                world = new World(training, validation, this.worldSize, range, bugs, this.numberOfBugsCopies, this.bugLife, textArea, results, this.maxBugs, this.maxScoreForReproduction);
                 canvas = new CanvasWorld(world);
                 canvasPanel.removeAll();
                 canvasPanel.add(canvas);
@@ -185,43 +184,38 @@ public class StartSimulationTask {
 
                 @Override
                 public void run() {
-                        while (1 == 1) {
-                                for (int i = 0; i < iterations; i++) {
-                                        // Paint the graphics
-                                        canvas.update(canvas.getGraphics());
-                                        world.cicle();
-                                }
-                                int index = rand.nextInt(ranges.size() - 1);
-                                Range range = ranges.get(index);
-                                // world.printResult(range);
-                                printResult(world.getBugs());
-                                double result = countIDs();
-                                if (result < stoppingCriteria) {
-                                        break;
-                                }
+                        for (int i = 0; i < iterations; i++) {
+                                // Paint the graphics
+                                canvas.update(canvas.getGraphics());
+                                world.cicle();
+                        }
+                        int index = rand.nextInt(ranges.size() - 1);
+                        Range range = ranges.get(index);
+                        printResult(world.getBugs());
+                        double result = countIDs();
 
 
-                                if (result < minCountId) {
-                                        minCountId = result;
-                                        stopCounting = 0;
-                                } else {
-                                        stopCounting++;
-                                }
-                                // Checking the stopping criteria
-                                if (result < stoppingCriteria || stopCounting > 100) {
-                                        //public TestBug(List<Integer> ids, classifiersEnum classifier, BugDataset training, BugDataset validation, double ridge) {
-                                        Result res = results.get(0);
-                                        List<Integer> ids = new ArrayList<Integer>();
-                                        for(String values: res.getValues()){
-                                                ids.add(Integer.valueOf(values));
-                                        }
-                                        TestBug test = new TestBug(ids, classifiersEnum.LinearRegression, training, validation, res.ridge);
-                                        test.printPrediction();
-                                        break;
-                                }
 
+                        if (result < minCountId) {
+                                minCountId = result;
+                                stopCounting = 0;
+                        } else {
+                                stopCounting++;
+                        }
+                        // Checking the stopping criteria
+                        if (result < stoppingCriteria || stopCounting > 5000) {
+                                Result res = results.get(0);
+                                List<Integer> ids = new ArrayList<Integer>();
+                                for (String values : res.getValues()) {
+                                        ids.add(Integer.valueOf(values));
+                                }
+                                TestBug test = new TestBug(ids, classifiersEnum.LinearRegression, training, validation, res.ridge);
+                                test.printPrediction();
+
+                        } else {
                                 startCicle(range, world.getBugs(), world.getResult());
                         }
+
                 }
         }
 
@@ -237,45 +231,39 @@ public class StartSimulationTask {
                                 }
                         }
                 };
+              
+                for (int i = 0; i < 30; i++) {
+                         Bug bug = bugs.get(i);
+                        Result result = new Result();
+                        result.Classifier = bug.getClassifierType().name();
+                        List<Integer> ids = new ArrayList<Integer>();
+                        for (PeakListRow row : bug.getRows()) {
+                                result.addValue(String.valueOf(row.getID()));
+                                ids.add(row.getID());
+                        }
 
-
-                int contbug = 0;
-                for (Bug bug : bugs) {
-                        //  if (bug.getSensitivity() > 0.5 && bug.getSpecificity() > 0.5) {
-                        if (bug.getScore() < 0.2) {
-                                Result result = new Result();
-                                result.Classifier = bug.getClassifierType().name();
-                                List<Integer> ids = new ArrayList<Integer>();
-                                for (PeakListRow row : bug.getRows()) {
-                                        result.addValue(String.valueOf(row.getID()));
-                                        ids.add(row.getID());
+                        TestBug testing = new TestBug(ids, bug.getClassifierType(), training, validation, bug.getRidge());
+                        double value = testing.prediction();
+                        result.realscore = value;
+                        result.score = bug.getScore();
+                        result.ridge = bug.getRidge();
+                        boolean isIt = false;
+                        for (Result r : this.results) {
+                                if (r.isIt(result.getValues(), result.Classifier)) {
+                                        r.count();
+                                        isIt = true;
                                 }
+                        }
 
-                                TestBug testing = new TestBug(ids, bug.getClassifierType(), training, validation, bug.getRidge());
-                                double value = testing.prediction();
-                                result.realscore = value;
-                                result.score = bug.getScore();
-                                result.ridge = bug.getRidge();
-                                boolean isIt = false;
-                                for (Result r : this.results) {
-                                        if (r.isIt(result.getValues(), result.Classifier)) {
-                                                r.count();
-                                                isIt = true;
-                                        }
-                                }
-
-                                if (!isIt) {
-                                        this.results.add(result);
-                                }
-
-                                //  contbug++;
+                        if (!isIt) {
+                                this.results.add(result);
                         }
                 }
-                //}
+            
 
                 Collections.sort(results, c);
 
-                contbug = 0;
+                int contbug = 0;
                 String result = "";
 
                 for (Result r : results) {
@@ -290,7 +278,4 @@ public class StartSimulationTask {
                 //  System.out.println(result);
 
         }
-
-
-
 }

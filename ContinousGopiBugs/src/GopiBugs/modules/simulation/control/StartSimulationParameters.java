@@ -39,11 +39,14 @@ public class StartSimulationParameters extends SimpleParameterSet {
     public static final Parameter bugLife = new SimpleParameter(
             ParameterType.INTEGER, "Life of the Bugs",
             "Minimum number of cicles that a bug can live", new Integer(300));
+    public static final Parameter maxScore = new SimpleParameter(
+            ParameterType.DOUBLE, "Maximum error",
+            "Maximum error for reproduction", new Double(10.0));
     public static final Parameter stoppingCriteria = new SimpleParameter(
             ParameterType.INTEGER, "Stopping criteria (%)",
             "% of variables in living in the world", new Integer(30));
     
     public StartSimulationParameters() {
-        super(new Parameter[]{iterations, worldSize, bugLimit, numberOfBugs, bugLife, stoppingCriteria});
+        super(new Parameter[]{iterations, worldSize, bugLimit, numberOfBugs, bugLife, maxScore, stoppingCriteria});
     }
 }

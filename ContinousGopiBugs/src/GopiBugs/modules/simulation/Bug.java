@@ -75,7 +75,7 @@ public class Bug {
         private double wellClassified, total;
         double spec = 0, sen = 0, totalspec = 0, totalsen = 0;
         private Random rand;
-        private int MAXNUMBERGENES = 3;
+        private int MAXNUMBERGENES = 10;
         Evaluation eval;
         boolean fixValue = false;
         Range range;
