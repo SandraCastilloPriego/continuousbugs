@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration> 
+  <nodes local="2"/>  
+  <modules> 
+    <module class="alvs.modules.file.openBasicFiles.training.OpenBasicFile"/>  
+    <module class="alvs.modules.file.openBasicFiles.validation.OpenBasicFile"/>  
+    <module class="alvs.modules.exit.ExitProgram"/>  
+    <module class="alvs.modules.configuration.Configuration"> 
+      <parameters>
+        <parameter name="Write results" type="BOOLEAN">true</parameter>
+        <parameter name="Paint simulation" type="BOOLEAN">false</parameter>
+      </parameters> 
+    </module>  
+    <module class="alvs.modules.simulation.test.Test"> 
+      <parameters>
+        <parameter name="Classifier" type="STRING">LinearRegression</parameter>
+        <parameter name="IDs:" type="STRING">52,10,2,226,69,130,4,213,51,40</parameter>
+        <parameter name="Ridge" type="DOUBLE">19.2</parameter>
+      </parameters> 
+    </module>  
+    <module class="alvs.modules.simulation.control.StartSimulation"> 
+      <parameters>
+        <parameter name="Number of iterations" type="INTEGER">50</parameter>
+        <parameter name="Size of the world" type="INTEGER">10</parameter>
+        <parameter name="Max number of bugs" type="INTEGER">2000</parameter>
+        <parameter name="Number of copies of bugs" type="INTEGER">5</parameter>
+        <parameter name="Life of the Bugs" type="INTEGER">300</parameter>
+        <parameter name="Classifier" type="STRING">LinearRegression</parameter>
+        <parameter name="Stopping criteria (%)" type="INTEGER">0</parameter>
+        <parameter name="Number of variables" type="INTEGER">3</parameter>
+        <parameter name="Reproduction probability" type="DOUBLE">0.3</parameter>
+        <parameter name="Correlation coefficient threshold" type="DOUBLE">0.7</parameter>
+      </parameters> 
+    </module> 
+  </modules>  
+  <desktop>
+    <mainwindow>
+      <x>1280</x>
+      <y>143</y>
+      <width>992</width>
+      <height>704</height>
+    </mainwindow>
+    <lastdirectory></lastdirectory>
+    <lastProjectDirectory>/home/scsandra/Desktop/TORNADO/Twin study/Experiment/lcms net/files/92.csv</lastProjectDirectory>
+    <lastSaveDirectory>/</lastSaveDirectory>
+    <parameter name="Filename" type="FILE_NAME"/>
+    <parameter name="type" type="STRING"/>
+  </desktop> 
+</configuration>

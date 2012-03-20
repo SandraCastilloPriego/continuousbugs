@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration> 
+  <nodes local="2"/>  
+  <modules> 
+    <module class="alvs.modules.file.openBasicFiles.training.OpenBasicFile"/>  
+    <module class="alvs.modules.file.openBasicFiles.validation.OpenBasicFile"/>  
+    <module class="alvs.modules.exit.ExitProgram"/>  
+    <module class="alvs.modules.configuration.Configuration"> 
+      <parameters>
+        <parameter name="Write results" type="BOOLEAN">true</parameter>
+        <parameter name="Paint simulation" type="BOOLEAN">false</parameter>
+      </parameters> 
+    </module>  
+    <module class="alvs.modules.simulation.test.Test"> 
+      <parameters>
+        <parameter name="Classifier" type="STRING">LinearRegression</parameter>
+        <parameter name="IDs:" type="STRING">150,51,35</parameter>
+        <parameter name="Ridge" type="DOUBLE">10.0</parameter>
+      </parameters> 
+    </module>  
+    <module class="alvs.modules.simulation.control.StartSimulation"> 
+      <parameters>
+        <parameter name="Number of iterations" type="INTEGER">50</parameter>
+        <parameter name="Size of the world" type="INTEGER">10</parameter>
+        <parameter name="Max number of bugs" type="INTEGER">1500</parameter>
+        <parameter name="Number of copies of bugs" type="INTEGER">5</parameter>
+        <parameter name="Life of the Bugs" type="INTEGER">300</parameter>
+        <parameter name="Classifier" type="STRING">LinearRegression</parameter>
+        <parameter name="Stopping criteria (%)" type="INTEGER">0</parameter>
+        <parameter name="Number of variables" type="INTEGER">5</parameter>
+      </parameters> 
+    </module> 
+  </modules>  
+  <desktop>
+    <mainwindow>
+      <x>2115</x>
+      <y>86</y>
+      <width>992</width>
+      <height>704</height>
+    </mainwindow>
+    <lastdirectory></lastdirectory>
+    <lastProjectDirectory>/home/scsandra/Desktop/TORNADO/Twin study/Experiment/lcmsRegressionfile_min120.csv</lastProjectDirectory>
+    <lastSaveDirectory>/</lastSaveDirectory>
+    <parameter name="Filename" type="FILE_NAME"/>
+    <parameter name="type" type="STRING"/>
+  </desktop> 
+</configuration>
